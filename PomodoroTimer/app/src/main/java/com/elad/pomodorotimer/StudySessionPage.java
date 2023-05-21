@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,5 +37,13 @@ public class StudySessionPage extends AppCompatActivity {
         Picasso.get()
                 .load(intent.getStringExtra("img"))
                 .into(viewHolder.sessionImg);
+
+        Button update_btn = findViewById(R.id.update_btn);
+        update_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
     }
 }

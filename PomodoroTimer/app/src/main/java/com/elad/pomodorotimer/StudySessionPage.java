@@ -1,5 +1,7 @@
 package com.elad.pomodorotimer;
 
+import static java.lang.System.currentTimeMillis;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,11 +54,18 @@ public class StudySessionPage extends AppCompatActivity {
                 .into(viewHolder.sessionImg);
 
         Button update_btn = findViewById(R.id.update_btn);
+        Button delete_btn = findViewById(R.id.delete_btn);
+
         update_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editStudySessionById(intent.getStringExtra("pid"));
             }
+        });
+
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { deleteStudySessionById(intent.getStringExtra("pid"));}
         });
     }
 
@@ -95,5 +104,25 @@ public class StudySessionPage extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
                         }
                     });
+    }
+
+    private void deleteStudySessionById(String pid) {
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference document = database.collection("studySessions").document(pid);
+
+        document
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getApplicationContext(), "studySession deleted", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

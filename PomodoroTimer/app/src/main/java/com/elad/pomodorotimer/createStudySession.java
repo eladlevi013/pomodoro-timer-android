@@ -53,24 +53,6 @@ public class createStudySession extends AppCompatActivity {
             }
         });
     }
-    
-//
-//    private void deleteStudySessionById(String pid) {
-//        database.collection("studySessions").document(pid)
-//                .delete()
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void unused) {
-//                        Toast.makeText(getApplicationContext(), "studySession deleted", Toast.LENGTH_LONG).show();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//    }
 
     private void createNewStudySession() {
         EditText goal_et = findViewById(R.id.set_goal_et);

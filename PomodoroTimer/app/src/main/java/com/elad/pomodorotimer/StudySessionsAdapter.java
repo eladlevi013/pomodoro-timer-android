@@ -1,12 +1,15 @@
 package com.elad.pomodorotimer;
 
 import android.content.Context;
+import android.icu.text.IDNA;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,11 +59,12 @@ public class StudySessionsAdapter extends ArrayAdapter <StudySession>{
 
         viewHolder.sessionGoal.setText(studySession.getGoal());
         viewHolder.sessionDuration.setText(studySession.getDuration());
-        viewHolder.sessionTime.setText(studySession.getTime().toString());
+        viewHolder.sessionTime.setText(studySession.getTime());
 
         Picasso.get()
                 .load(studySession.getImage())
                 .into(viewHolder.sessionImg);
+
         return convertView;
     }
 }

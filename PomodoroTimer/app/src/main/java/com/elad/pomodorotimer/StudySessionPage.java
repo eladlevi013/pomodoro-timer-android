@@ -108,9 +108,8 @@ public class StudySessionPage extends AppCompatActivity {
 
     private void deleteStudySessionById(String pid) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference document = database.collection("studySessions").document(pid);
 
-        document
+        database.collection("studySessions").document(pid)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

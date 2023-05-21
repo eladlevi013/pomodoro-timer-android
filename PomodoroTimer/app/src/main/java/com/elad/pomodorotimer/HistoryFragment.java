@@ -73,9 +73,10 @@ public class HistoryFragment extends Fragment {
                     String duration = documentSnapshot.getString("studySessionDuration");
                     String time = documentSnapshot.getString("studySessionTime");
                     String image = documentSnapshot.getString("studySessionImage");
+                    String id = documentSnapshot.getId();
 
                     // create a new StudySession object
-                    StudySession studySession = new StudySession(goal, duration, time, image);
+                    StudySession studySession = new StudySession(goal, duration, time, image, id);
 
                     // add the StudySession object to the array
                     arr.add(studySession);
@@ -97,6 +98,7 @@ public class HistoryFragment extends Fragment {
                         intent.putExtra("duration", arr.get(i).getDuration());
                         intent.putExtra("time", arr.get(i).getTime());
                         intent.putExtra("img", arr.get(i).getImage());
+                        intent.putExtra("pid", arr.get(i).getPid());
                         startActivity(intent);
                     }
                 });

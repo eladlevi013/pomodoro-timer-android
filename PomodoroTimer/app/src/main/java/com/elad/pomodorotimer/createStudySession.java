@@ -53,24 +53,7 @@ public class createStudySession extends AppCompatActivity {
             }
         });
     }
-
-//    private void editStudySessionById(String pid) {
-//        DocumentReference document = database.collection("studySessions").document(pid);
-//        document
-//                .update("studySessionTime", "5900")
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void unused) {
-//                        Toast.makeText(getApplicationContext(), "studySession updated", Toast.LENGTH_LONG).show();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//    }
+    
 //
 //    private void deleteStudySessionById(String pid) {
 //        database.collection("studySessions").document(pid)

@@ -24,6 +24,13 @@ public class TimerFragment extends Fragment {
         return new TimerFragment();
     }
 
+    //FIREBASE-FIRESTORE
+    private FirebaseFirestore database = FirebaseFirestore.getInstance();
+    public static final String KEY_STUDYSESSION_GOAL = "studySessionGoal";
+    public static final String KEY_STUDYSESSION_DURATION = "studySessionDuration";
+    public static final long KEY_STUDYSESSION_TIME = "studySessionTime";
+    public static final String KEY_STUDYSESSION_IMAGE = "studySessionImage";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,5 +90,145 @@ public class TimerFragment extends Fragment {
         int seconds = (int) (timeRemainingInMillis / 1000) % 60;
         String timeLeftFormatted = String.format("%02d:%02d", minutes, seconds);
         timer_tv.setText(timeLeftFormatted);
+    }
+
+    private void editStudySessionById(String pid) {
+        DocumentReference document = database.collection("studySessions").document(pid);
+        document
+                .update("studySessionTime", "5900")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getApplicationContext(), "studySession updated", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void deleteStudySessionById(String pid) {
+        database.collection("studySessions").document(pid)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getApplicationContext(), "studySession deleted", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void getStudySessionById(String pid) {
+        DocumentReference document = database
+                .collection("studySessions")
+                .document(pid);
+        document
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if(documentSnapshot.exists()){
+                                System.out.println(documentSnapshot.getId() + " ---> " + documentSnapshot.getData());
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No doc for you", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private void getStudySessionByValue(String goal) {
+        database.collection("studySessions")
+                .whereEqualTo("studySessionGoal", goal)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                System.out.println(document.getId() + " ---> " + document.getData());
+                            }
+                        }   else {
+                            Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private void createNewStudySession() {
+        //GET PARAMETERS
+        String ssGoal = studySessionGoal.getText().toString().trim();
+        String ssDuration = studySessionDuration.getText().toString().trim();
+        long ssTime = studySessionTime.getText().toString().trim();//CHECK DATA
+        String ssImage = "https://www.apple.com/newsroom/images/product/iphone/geo/Apple-iPhone-14-Pro-iPhone-14-Pro-Max-deep-purple-220907-geo_inline.jpg.large.jpg";
+
+        //MAPPING
+        Map<String, Object> data = new HashMap<>();
+        data.put(KEY_STUDYSESSION_GOAL , ssGoal);
+        data.put(KEY_STUDYSESSION_DURATION , ssDuration);
+        data.put(KEY_STUDYSESSION_TIME , ssTime);
+        data.put(KEY_STUDYSESSION_IMAGE , ssImage);
+
+        database
+                .collection("studySessions")
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getApplicationContext(), "studySession created", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void getAllStudySessions()
+    {
+        database
+                .collection("studySessions")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        studySessions = new ArrayList<StudySession>();
+
+                        if(task.isSuccessful())
+                        {
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                StudySession ss = document.toObject(StudySession.class);
+                                studySessions.add(ss);
+                            }
+                            /*
+                            CHANGE FROM Products
+                            Intent intent = new Intent(getApplicationContext(), Products.class);
+                            intent.putParcelableArrayListExtra("list", studySessions);
+                            startActivity(intent);
+
+                             */
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Error: " + task.getException(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }

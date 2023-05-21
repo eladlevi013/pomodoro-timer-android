@@ -1,5 +1,8 @@
 package com.elad.pomodorotimer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class StudySession {
     private String goal;
     private String duration;
@@ -44,4 +47,37 @@ public class StudySession {
     public void setImage(String image) {
         this.image = image;
     }
+
+    /*
+    public StudySession(Parcel source) {
+        goal = source.readString();
+        duration = source.readString();
+        time = source.readString();
+        image = source.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(goal);
+        dest.writeString(duration);
+        dest.writeString(time);
+        dest.writeString(image);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+        public Product createFromParcel(Parcel source) {
+            return new StudySession(source);
+        }
+
+        @Override
+        public StudySession[] newArray(int size) {
+            return new StudySession[size];
+        }
+    };
+
+     */
 }

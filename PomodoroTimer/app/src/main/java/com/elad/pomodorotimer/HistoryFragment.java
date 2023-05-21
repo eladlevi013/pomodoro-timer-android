@@ -1,10 +1,12 @@
 package com.elad.pomodorotimer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -51,6 +53,18 @@ public class HistoryFragment extends Fragment {
 
         StudySessionsAdapter studySessionsAdapter = new StudySessionsAdapter(getContext(), arr);
         studySessionsListView.setAdapter(studySessionsAdapter);
+
+        studySessionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(view.getContext(), StudySessionPage.class);
+                intent.putExtra("goal", arr.get(i).getGoal());
+                intent.putExtra("duration", arr.get(i).getDuration());
+                intent.putExtra("time", arr.get(i).getTime());
+                intent.putExtra("img", arr.get(i).getImage());
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

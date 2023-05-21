@@ -45,9 +45,9 @@ public class HistoryFragment extends Fragment {
         ListView studySessionsListView = rootView.findViewById(R.id.studySessionsListView);
 
         ArrayList<StudySession> arr = new ArrayList<>();
-        arr.add(new StudySession("Making Android App", "12:56", "123123", "asd"));
-        arr.add(new StudySession("Making React App", "15:56", "123123", "asaaad"));
-        arr.add(new StudySession("Making Flutter App", "21:56", "123123", "asdsd"));
+        arr.add(new StudySession("Making Android App", "12:56", "123123", "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png"));
+        arr.add(new StudySession("Making React App", "15:56", "123123", "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png"));
+        arr.add(new StudySession("Making Flutter App", "21:56", "123123", "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png"));
 
         StudySessionsAdapter studySessionsAdapter = new StudySessionsAdapter(getContext(), arr);
         studySessionsListView.setAdapter(studySessionsAdapter);

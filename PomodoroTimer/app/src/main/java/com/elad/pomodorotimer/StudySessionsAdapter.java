@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class StudySessionsAdapter extends ArrayAdapter <StudySession>{
@@ -55,11 +57,10 @@ public class StudySessionsAdapter extends ArrayAdapter <StudySession>{
         viewHolder.sessionGoal.setText(studySession.getGoal());
         viewHolder.sessionDuration.setText(studySession.getDuration());
         viewHolder.sessionTime.setText(studySession.getTime().toString());
-//        Picasso.get()
-//                .load(product.getProductImage())
-//                .resize(90, 90)
-//                .centerCrop()
-//                .into(viewHolder.pImage);
+
+        Picasso.get()
+                .load(studySession.getImage())
+                .into(viewHolder.sessionImg);
         return convertView;
     }
 }

@@ -11,21 +11,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
-public class createStudySession extends AppCompatActivity {
+public class CreateStudySession extends AppCompatActivity {
     //FIREBASE-FIRESTORE
     private FirebaseFirestore database = FirebaseFirestore.getInstance();
     public static final String KEY_STUDYSESSION_GOAL = "studySessionGoal";
@@ -41,14 +41,28 @@ public class createStudySession extends AppCompatActivity {
 
         study_session_time_tv = findViewById(R.id.session_time_tv);
         study_session_duration_tv = findViewById(R.id.session_duration_tv);
+
+        // gets the data from the sender
         Intent intent = getIntent();
-        study_session_time_tv.setText(intent.getStringExtra("time"));
-        study_session_duration_tv.setText(intent.getStringExtra("duration"));
+
+        int duration = Integer.parseInt(intent.getStringExtra("duration"));
+        int minutes = (int) (duration / 60);
+        int seconds = (int) (duration % 60);
+        String timeLeftFormatted = "duration: " + String.format("%02d:%02d", minutes, seconds);
+        study_session_duration_tv.setText(timeLeftFormatted);
+
+        long yourMilliseconds = Long.parseLong(intent.getStringExtra("time"));
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+        Date resultDate = new Date(yourMilliseconds);
+        String formattedTime = sdf.format(resultDate);
+        study_session_time_tv.setText("time: " + formattedTime);
 
         Button add_study_btn = findViewById(R.id.add_btn);
         add_study_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 createNewStudySession();
             }
         });
@@ -57,11 +71,16 @@ public class createStudySession extends AppCompatActivity {
     private void createNewStudySession() {
         EditText goal_et = findViewById(R.id.set_goal_et);
         EditText img_et = findViewById(R.id.set_image_et);
-
         String goal = goal_et.getText().toString();
         String img = img_et.getText().toString();
-        String time = study_session_time_tv.getText().toString();
-        String duration = study_session_duration_tv.getText().toString();
+        String time = getIntent().getStringExtra("time");
+        String duration = getIntent().getStringExtra("duration");
+
+        // data validation
+        if(img.isEmpty())
+        {
+            img = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpKjTt-J8EHJOCD5DPMy7pl2u57HDoaOjNA5n3vj78&s";
+        }
 
         //MAPPING
         Map<String, Object> data = new HashMap<>();
@@ -85,5 +104,9 @@ public class createStudySession extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_LONG).show();
                     }
                 });
+
+        // Moving back to the timer page
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -21,40 +21,50 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class StudySessionPage extends AppCompatActivity {
-    public class ViewHolder
-    {
-        TextView sessionGoal, sessionDuration, sessionTime;
-        ImageView sessionImg;
-    }
     EditText sessionGoal_et, sessionImage_et;
+    TextView sessionGoal, sessionDuration, sessionTime;
+    ImageView sessionImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_study_session_page);
 
-        // binds editText
+        // binds the elements to the variables
         sessionGoal_et = findViewById(R.id.set_goal_et);
         sessionImage_et = findViewById(R.id.set_image_et);
-
-        ViewHolder viewHolder = new ViewHolder();
-        viewHolder.sessionGoal = (TextView) findViewById(R.id.session_goal_tv);
-        viewHolder.sessionDuration = (TextView) findViewById(R.id.session_duration_tv);
-        viewHolder.sessionTime = (TextView) findViewById(R.id.session_time_tv);
-        viewHolder.sessionImg = (ImageView) findViewById(R.id.session_img);
+        sessionGoal = (TextView) findViewById(R.id.session_goal_tv);
+        sessionDuration = (TextView) findViewById(R.id.session_duration_tv);
+        sessionTime = (TextView) findViewById(R.id.session_time_tv);
+        sessionImg = (ImageView) findViewById(R.id.session_img);
+        Button update_btn = findViewById(R.id.update_btn);
+        Button delete_btn = findViewById(R.id.delete_btn);
 
         // sets the values
         Intent intent = getIntent();
-        viewHolder.sessionGoal.setText(intent.getStringExtra("goal"));
-        viewHolder.sessionDuration.setText(intent.getStringExtra("duration"));
-        viewHolder.sessionTime.setText(intent.getStringExtra("time"));
+        sessionGoal.setText(intent.getStringExtra("goal"));
+
+        int duration = Integer.parseInt(intent.getStringExtra("duration"));
+        int minutes = (int) (duration / 60);
+        int seconds = (int) (duration % 60);
+        String timeLeftFormatted = "duration: " + String.format("%02d:%02d", minutes, seconds);
+        sessionDuration.setText(timeLeftFormatted);
+
+        long yourMilliseconds = Long.parseLong(intent.getStringExtra("time"));
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+        Date resultDate = new Date(yourMilliseconds);
+        String formattedTime = sdf.format(resultDate);
+        sessionTime.setText("time: " + formattedTime);
+
         Picasso.get()
                 .load(intent.getStringExtra("img"))
-                .into(viewHolder.sessionImg);
-
-        Button update_btn = findViewById(R.id.update_btn);
-        Button delete_btn = findViewById(R.id.delete_btn);
+                .into(sessionImg);
 
         update_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +75,10 @@ public class StudySessionPage extends AppCompatActivity {
 
         delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { deleteStudySessionById(intent.getStringExtra("pid"));}
+            public void onClick(View view)
+            {
+                deleteStudySessionById(intent.getStringExtra("pid"));
+            }
         });
     }
 
@@ -80,6 +93,8 @@ public class StudySessionPage extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(getApplicationContext(), "studySession goal updated", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -115,6 +130,8 @@ public class StudySessionPage extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getApplicationContext(), "studySession deleted", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

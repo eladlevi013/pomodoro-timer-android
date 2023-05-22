@@ -16,7 +16,10 @@ import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class StudySessionsAdapter extends ArrayAdapter <StudySession>{
     private Context context;
@@ -58,8 +61,19 @@ public class StudySessionsAdapter extends ArrayAdapter <StudySession>{
         }
 
         viewHolder.sessionGoal.setText(studySession.getGoal());
-        viewHolder.sessionDuration.setText(studySession.getDuration());
-        viewHolder.sessionTime.setText(studySession.getTime());
+
+        int duration = Integer.parseInt(studySession.getDuration());
+        int minutes = (int) (duration / 60);
+        int seconds = (int) (duration % 60);
+        String timeLeftFormatted = "duration: " + String.format("%02d:%02d", minutes, seconds);
+        viewHolder.sessionDuration.setText(timeLeftFormatted);
+
+        long yourMilliseconds = Long.parseLong(studySession.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+        Date resultDate = new Date(yourMilliseconds);
+        String formattedTime = sdf.format(resultDate);
+        viewHolder.sessionTime.setText("time: " + formattedTime);
 
         Picasso.get()
                 .load(studySession.getImage())

@@ -12,8 +12,8 @@ This is a Pomodoro Timer Android app that allows you to track your work and brea
 
 ## App Demonstration:
 <p align="center" width="100%">
-  <img src="https://github.com/eladlevi013/pomodoro-timer-android/assets/60574244/bbc90666-c318-4b47-9ca7-da8319700d7d" width="20%" padding="50%">
-   <img src="https://github.com/eladlevi013/pomodoro-timer-android/assets/60574244/0c1fd699-b229-4214-a76f-983940b0ead9" width="20%" padding="50%">
+  <img src="https://github.com/eladlevi013/pomodoro-timer-android/assets/60574244/bf3e6240-aada-4009-a19e-b0e4edf0a6d8" width="20%" padding="50%">
+   <img src="https://github.com/eladlevi013/pomodoro-timer-android/assets/60574244/21c4f909-42c4-456d-b381-c513e8e9ef46" width="20%" padding="50%">
   </br> 
 
 ## Installation

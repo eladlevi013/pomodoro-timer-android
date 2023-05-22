@@ -69,7 +69,7 @@ public class TimerFragment extends Fragment {
     }
 
     private void startTimer() {
-        countDownTimer = new CountDownTimer(25 * 60 * 1000, 1000) { // Adjust the duration as needed (in seconds)
+        countDownTimer = new CountDownTimer(20 * 1000, 1000) { // Adjust the duration as needed (in seconds)
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemainingInSeconds = millisUntilFinished / 1000; // Convert milliseconds to seconds
@@ -92,7 +92,7 @@ public class TimerFragment extends Fragment {
                     start_timer_btn.setText("Start");
                     // moving to createStudySession activity
                     Intent intent = new Intent(getActivity(), CreateStudySession.class);
-                    intent.putExtra("duration", "25:00");
+                    intent.putExtra("duration", "1500");
                     intent.putExtra("time", currentTimeMillis() + "");
                     startActivity(intent);
                     isTimerRunning = false;
@@ -152,7 +152,7 @@ public class TimerFragment extends Fragment {
 
         // Create the intent for the activity to be launched when the notification is clicked
         Intent intent = new Intent(context, CreateStudySession.class);  // Replace `YourActivity` with the desired activity class
-        intent.putExtra("duration", "25:00");
+        intent.putExtra("duration", "1500");
         intent.putExtra("time", String.valueOf(currentTimeMillis()));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

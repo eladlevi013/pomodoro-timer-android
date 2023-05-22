@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +47,7 @@ public class CreateStudySession extends AppCompatActivity {
         Intent intent = getIntent();
 
         int duration = Integer.parseInt(intent.getStringExtra("duration"));
+        Log.d("duration", String.valueOf(duration));
         int minutes = (int) (duration / 60);
         int seconds = (int) (duration % 60);
         String timeLeftFormatted = "duration: " + String.format("%02d:%02d", minutes, seconds);

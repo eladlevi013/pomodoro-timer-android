@@ -112,7 +112,7 @@ public class TimerFragment extends Fragment {
             countDownTimer.cancel();
         }
 
-        long elapsedTimeInSeconds = TWENTY_FIVE_MILLISECONDS - timeRemainingInSeconds;
+        long elapsedTimeInSeconds = TWENTY_FIVE_MILLISECONDS/1000 - timeRemainingInSeconds;
         Intent intent = new Intent(getActivity(), CreateStudySession.class);
         intent.putExtra("duration", String.valueOf(elapsedTimeInSeconds));
         intent.putExtra("time", String.valueOf(currentTimeMillis()));
